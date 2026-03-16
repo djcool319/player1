@@ -4,21 +4,18 @@ module.exports = {
 
     if (message.author.bot) return;
 
-    if (message.content === "あ") {
+    const replies = [
+      "こんにちは",
+      "やあ",
+      "元気？",
+      "どうした？",
+      "呼んだ？",
+      "はい？"
+    ];
 
-      const replies = [
-        "こんにちは",
-        "やあ",
-        "元気？",
-        "どうした？",
-        "呼んだ？",
-        "はい？"
-      ];
+    const randomReply = replies[Math.floor(Math.random() * replies.length)];
 
-      const randomReply = replies[Math.floor(Math.random() * replies.length)];
-
-      message.reply(randomReply);
-    }
+    message.reply(randomReply);
 
   }
 };
