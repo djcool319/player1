@@ -4,18 +4,32 @@ module.exports = {
 
     if (message.author.bot) return;
 
-    const replies = [
-      "こんにちは",
-      "やあ",
-      "元気？",
-      "どうした？",
-      "呼んだ？",
-      "はい？"
-    ];
+    const r = Math.random();
 
-    const randomReply = replies[Math.floor(Math.random() * replies.length)];
-
-    message.reply(randomReply);
+    if (r <= 0.000001) { // 0.0001%
+      await message.reply("おめでとう！0.0001％を引いたよ！");
+      await message.react("👑");
+    }
+    else if (r <= 0.00001) { // 0.001%
+      await message.reply("おめでとう！0.001％を引いたよ！");
+      await message.react("💎");
+    }
+    else if (r <= 0.00005) { // 0.005%
+      await message.reply("おめでとう！0.005％を引いたよ！");
+      await message.react("✨");
+    }
+    else if (r <= 0.001) { // 0.1%
+      await message.reply("おめでとう！0.1％を引いたよ！");
+      await message.react("🎊");
+    }
+    else if (r <= 0.005) { // 0.5%
+      await message.reply("おめでとう！0.5％を引いたよ！");
+      await message.react("🎉");
+    }
+    else if (r <= 0.01) { // 1%
+      await message.reply("おめでとう！1％を引いたよ！");
+      await message.react("⭐");
+    }
 
   }
 };
