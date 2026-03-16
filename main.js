@@ -16,7 +16,7 @@ const path = require('node:path');
 
 //-----------commands------------
 
-require("./deploy-commands.js");
+//require("./deploy-commands.js");
 
 //--------------------コマンドを読み込む--------------------------
 //スラッシュコマンド
