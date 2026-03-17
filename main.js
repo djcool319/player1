@@ -64,4 +64,11 @@ client.on(Events.InteractionCreate, async interaction => {
 	}
 });
 
-client.login(process.env.TOKEN);
+if (!process.env.TOKEN) {
+  console.error("TOKENが読み込まれていません");
+  process.exit(1);
+}
+
+client.login(process.env.TOKEN)
+  .then(() => console.log("ログイン成功"))
+  .catch(err => console.error("ログイン失敗:", err));
