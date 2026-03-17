@@ -24,15 +24,7 @@ module.exports = {
     try {
       console.log('コマンド開始');
 
-      if (!interaction.channel.name.includes('タイムライン')) {
-        await interaction.reply({
-          content: 'このコマンドは「タイムライン」チャンネルでのみ使用できます。',
-          ephemeral: true
-        });
-        return;
-      }
-
-      // defer で応答を保留
+      // 最初に defer で応答保留（3秒以内の応答タイムアウト回避）
       await interaction.deferReply({ ephemeral: true });
 
       const tweetContent = interaction.options.getString('content');
@@ -71,15 +63,9 @@ module.exports = {
         ephemeral: true
       });
 
-      // ボタンのコレクター
-      const filter = i =>
-        i.customId === `delete_${sentMessage.id}` &&
-        i.user.id === interaction.user.id;
-
-      const collector = sentMessage.createMessageComponentCollector({
-        filter,
-        time: 600000 // 10分
-      });
+      // ボタンのコレクター（10分間監視）
+      const filter = i => i.customId === `delete_${sentMessage.id}` && i.user.id === interaction.user.id;
+      const collector = sentMessage.createMessageComponentCollector({ filter, time: 600000 });
 
       collector.on('collect', async i => {
         try {
@@ -93,7 +79,8 @@ module.exports = {
 
     } catch (err) {
       console.error(err);
-      if (interaction.replied || interaction.deferred) {
+      // エラー時も必ず応答を返す
+      if (interaction.deferred || interaction.replied) {
         await interaction.followUp({ content: 'エラーが発生しました', ephemeral: true });
       } else {
         await interaction.reply({ content: 'エラーが発生しました', ephemeral: true });

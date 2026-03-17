@@ -36,7 +36,7 @@ for (const file of slashcommandFiles) {
   const command = require(slashfilePath);
   console.log(`-> [Loaded Command] ${file.split('.')[0]}`);
   client.commands.set(command.data.name, command);
-}
+} 
 
 // イベント
 const eventsPath = path.join(__dirname, 'events');
