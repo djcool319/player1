@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 
 const express = require('express');
 const path = require('path');
@@ -13,15 +13,24 @@ app.get("/", (req, res) => {
     res.write(data);
     res.end();
   });
-})
+});
+
+// ===== ここ重要：TOKEN確認 =====
+if (!process.env.TOKEN) {
+  console.error("TOKENが読み込まれていません");
+  process.exit(1);
+} else {
+  console.log("TOKEN読み込みOK");
+}
+
+// ===== Bot起動 =====
+try {
+  require('./main.js');
+} catch (err) {
+  console.error("main.jsの読み込み失敗:", err);
+}
 
 // サーバーを起動
 app.listen(3000, () => {
-    console.log(`サーバーを開きました`);
-  });
-  
-  if (process.env.TOKEN == undefined || process.env.TOKEN == "") {
-    console.log("TOKENを設定してください");
-  }
-
-  require('./main.js')
+  console.log(`サーバーを開きました`);
+});
