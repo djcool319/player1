@@ -76,6 +76,9 @@ client.login(process.env.TOKEN)
   .then(() => console.log("login() 成功"))
   .catch(err => console.error("ログイン失敗:", err));
 
+  console.log("TOKEN長さ:", process.env.TOKEN.length);
+console.log("TOKEN末尾:", JSON.stringify(process.env.TOKEN.slice(-5)));
+
 // Interaction
 client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) return;
