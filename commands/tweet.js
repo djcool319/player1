@@ -22,14 +22,13 @@ module.exports = {
 
   async execute(client, interaction) {
     try {
-      console.log('コマンド開始');
-
-      // 最初に defer で応答保留（3秒以内の応答タイムアウト回避）
+      // --- 最初に defer で応答保留（3秒タイムアウト回避） ---
       await interaction.deferReply({ ephemeral: true });
 
       const tweetContent = interaction.options.getString('content');
       const isAnonymous = interaction.options.getBoolean('anonymous') ?? false;
 
+      // --- ユーザー名取得 ---
       let userName;
       if (isAnonymous) {
         userName = '匿名';
@@ -42,28 +41,26 @@ module.exports = {
         }
       }
 
+      // --- メッセージ送信 ---
       const messageText = `--------------------------\n**${userName}**: ${tweetContent}`;
       const sentMessage = await interaction.channel.send(messageText);
-
-      // リアクション追加
       await sentMessage.react('❤️');
 
-      // 削除ボタン作成
+      // --- 削除ボタン作成 ---
       const button = new ButtonBuilder()
         .setCustomId(`delete_${sentMessage.id}`)
         .setLabel('削除')
         .setStyle(ButtonStyle.Danger);
-
       const row = new ActionRowBuilder().addComponents(button);
 
-      // deferReply 後は followUp で応答
+      // --- deferReply 後は followUp で応答 ---
       await interaction.followUp({
         content: 'ツイートを投稿しました！',
         components: [row],
         ephemeral: true
       });
 
-      // ボタンのコレクター（10分間監視）
+      // --- ボタン押下で削除 ---
       const filter = i => i.customId === `delete_${sentMessage.id}` && i.user.id === interaction.user.id;
       const collector = sentMessage.createMessageComponentCollector({ filter, time: 600000 });
 
@@ -79,7 +76,7 @@ module.exports = {
 
     } catch (err) {
       console.error(err);
-      // エラー時も必ず応答を返す
+      // --- 例外時も必ず応答 ---
       if (interaction.deferred || interaction.replied) {
         await interaction.followUp({ content: 'エラーが発生しました', ephemeral: true });
       } else {
