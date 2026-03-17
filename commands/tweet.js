@@ -7,7 +7,7 @@ const {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('tweet')
+    .setName('newtweet')
     .setDescription('タイムラインにツイートを投稿します')
     .addStringOption(option =>
       option.setName('内容')
