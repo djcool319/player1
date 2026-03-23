@@ -46,10 +46,10 @@ for (const file of eventsFiles) {
   const eventfilePath = path.join(eventsPath, file);
   const event = require(eventfilePath);
   if (event.once) {
-    client.once(event.name, (...args) => event.execute(...args));
-  } else {
-    client.on(event.name, (...args) => event.execute(...args));
-  }
+  client.once(event.name, (...args) => event.execute(...args, client));
+} else {
+  client.on(event.name, (...args) => event.execute(...args, client));
+}
   console.log(`-> [Loaded Event] ${file.split('.')[0]}`);
 }
 
